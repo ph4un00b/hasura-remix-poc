@@ -1,6 +1,6 @@
-import { createCookieSessionStorage } from "remix";
-
 // Learn more about cookies at MDN https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+import { createCookieSessionStorage } from "@remix-run/node";
+
 // With Firebase hosting your cookie must be named __session https://firebase.google.com/docs/hosting/manage-cache#using_cookies
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage({

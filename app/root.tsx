@@ -1,19 +1,5 @@
-import {
-  MetaFunction,
-  json,
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  // LoaderFunction,
-  // ActionFunction,
-  useLoaderData,
-  redirect,
-  useFetcher,
-} from "remix";
-
+import { json, MetaFunction, redirect } from "@remix-run/node";
+import { Meta, Links, LiveReload, Outlet, Scripts, ScrollRestoration, useFetcher, useLoaderData } from "@remix-run/react";
 import {
   AuthenticityTokenInput,
   AuthenticityTokenProvider,

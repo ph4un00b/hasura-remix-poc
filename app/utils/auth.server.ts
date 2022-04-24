@@ -1,4 +1,4 @@
-import {verifyAuthenticityToken} from "remix-utils";
+import { verifyAuthenticityToken } from "remix-utils/build/server";
 import {getSession} from "./session.server";
 
 export async function getSessionData(

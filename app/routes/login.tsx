@@ -1,19 +1,25 @@
-import {useEffect} from "react";
-import {ActionFunction, redirect, useSubmit} from "remix";
-import {ClientOnly, createAuthenticityToken, unauthorized, useAuthenticityToken, useHydrated,} from "remix-utils";
-import {commitSession} from "~/utils/session.server";
-import {admin} from "~/utils/firebase.server";
-import {getSessionData} from "~/utils/auth.server";
+import { useEffect } from "react";
+import { ActionFunction, redirect, useSubmit } from "remix";
+import {
+  ClientOnly,
+  createAuthenticityToken,
+  unauthorized,
+  useAuthenticityToken,
+  useHydrated,
+} from "remix-utils";
+import { commitSession } from "~/utils/session.server";
+import { admin } from "~/utils/firebase.server";
+import { getSessionData } from "~/utils/auth.server";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 // We need Javascript client side to run the Firebase Login component
-export const handle = {hydrate: true};
+export const handle = { hydrate: true };
 
-export const action: ActionFunction = async ({request}) => {
+export const action: ActionFunction = async ({ request }) => {
   // Get the session and verify the CSRF token
-  const {session} = await getSessionData(request, true);
+  const { session } = await getSessionData(request, true);
   const form = await request.formData();
   const idToken = form.get("idToken") as string;
   // Set session expiration to 5 days.
@@ -25,13 +31,14 @@ export const action: ActionFunction = async ({request}) => {
       // Create session cookie and set it.
       const cookie = await admin
         .auth()
-        .createSessionCookie(idToken, {expiresIn});
+        .createSessionCookie(idToken, { expiresIn });
+      console.log(cookie);
       session.set("idToken", cookie);
       // Create a new CSRF token to avoid session fixation attacks
       // https://owasp.org/www-community/attacks/Session_fixation
       createAuthenticityToken(session);
       return redirect("/", {
-        headers: {"Set-Cookie": await commitSession(session)},
+        headers: { "Set-Cookie": await commitSession(session) },
       });
     }
     // If the JWT is too old we reject it
@@ -52,8 +59,14 @@ export default function Login() {
 
   useEffect(() => {
     if (!firebase.apps.length) {
-      // @ts-ignore window.ENV
-      firebase.initializeApp(window.ENV.FIREBASE_ADMIN_SERVICE_ACCOUNT);
+      firebase.initializeApp({
+        apiKey: "AIzaSyDzd2gCVoUVVoPbU-mp4iq18E2UurZPHqo",
+        authDomain: "hasura-remix-e76ed.firebaseapp.com",
+        projectId: "hasura-remix-e76ed",
+        storageBucket: "hasura-remix-e76ed.appspot.com",
+        messagingSenderId: "128320741795",
+        appId: "1:128320741795:web:957d9f3f20d7ad507d3a16"
+      });
     }
     // Our auth is persisted in our cookie
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
@@ -94,7 +107,7 @@ export default function Login() {
             ],
           }}
           firebaseAuth={firebase.auth()}
-        />
+        ></StyledFirebaseAuth>
       )}
     </ClientOnly>
   );

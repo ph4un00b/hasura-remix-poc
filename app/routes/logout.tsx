@@ -1,7 +1,7 @@
-import {ActionFunction, LoaderFunction, redirect} from "remix";
 import {destroySession} from "~/utils/session.server";
 import {admin} from "~/utils/firebase.server";
 import {getSessionData} from "~/utils/auth.server";
+import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 
 export const loader: LoaderFunction = async ({request}) => {
   return redirect("/");
