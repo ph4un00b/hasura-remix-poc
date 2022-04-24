@@ -27,6 +27,7 @@ import {getSessionData} from "./utils/auth.server";
 interface LoaderData {
   csrf?: string;
   isLoggedIn: boolean;
+  ENV: Record<string, string>
 }
 
 // Setup CSRF token only if they are heading to the login page.
@@ -48,7 +49,13 @@ export async function action({request}: { request: Request }) {
 
 export async function loader({request}: { request: Request }) {
   const {csrf, idToken} = await getSessionData(request);
-  return json<LoaderData>({csrf, isLoggedIn: !!idToken});
+  return json<LoaderData>({
+    csrf,
+    isLoggedIn: !!idToken,
+    ENV: {
+      FIREBASE_ADMIN_SERVICE_ACCOUNT: process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT!
+    }
+  });
 }
 
 export const meta: MetaFunction = () => ({
@@ -63,7 +70,7 @@ export default function App() {
 
   const fetcher = useFetcher();
 
-  const {csrf, isLoggedIn} = useLoaderData<LoaderData>();
+  const {csrf, isLoggedIn, ENV} = useLoaderData<LoaderData>();
 
   return (
     <html lang="en">
@@ -94,7 +101,12 @@ export default function App() {
       <Outlet/>
     </AuthenticityTokenProvider>
     <ScrollRestoration/>
-    {shouldHydrate && <Scripts/>}
+    {shouldHydrate && (
+      <>
+        <script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(ENV)}`}}/>
+        <Scripts/>
+      </>
+    )}
     {process.env.NODE_ENV === "development" && <LiveReload/>}
     </body>
     </html>

@@ -42,6 +42,6 @@
     "postinstall": "remix setup node",
     "start": "cross-env NODE_ENV=production remix-serve build",
     "codegen": "node -r dotenv/config node_modules/.bin/gql-gen",
-    "data:admin": "deno run admin-parse.js"
+    "data:firebase": "deno run admin-parse.js"
   }
 }
