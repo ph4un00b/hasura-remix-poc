@@ -5,3 +5,5 @@ node_modules
 /public/build
 .env
 /.idea
+firebase-debug.log
+/_configs
