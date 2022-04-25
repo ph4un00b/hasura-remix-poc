@@ -1,0 +1,8 @@
+table:
+  schema: public
+  name: cargo
+configuration:
+  custom_root_fields: {}
+  custom_column_names:
+    launch_id: launchId
+    user_id: userId
