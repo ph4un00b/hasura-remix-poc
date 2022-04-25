@@ -1,1 +1,9 @@
-[]
+- name: default_jamon
+  kind: postgres
+  configuration:
+    connection_info:
+      use_prepared_statements: false
+      database_url:
+        from_env: PG_DATABASE_URL
+      isolation_level: read-committed
+  tables: "!include default_jamon/tables/tables.yaml"
