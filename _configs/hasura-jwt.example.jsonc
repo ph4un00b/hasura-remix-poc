@@ -1,0 +1,21 @@
+{
+    "type": "RS256",
+    // { taken from a decoded cookie from https://jwt.io/
+    //  "alg": "RS256",
+    //  "kid": "tB0M2A"
+    // }
+    // look for "kid cert"
+    // https://www.googleapis.com/identitytoolkit/v3/relyingparty/publicKeys
+    "key": "<Firebase public cert from previous step>",
+    "audience": "<firebase project id>",
+    "issuer": "https://session.firebase.google.com/<firebase project id>",
+    "claims_map": {
+        "x-hasura-allowed-roles": [
+            "user"
+        ],
+        "x-hasura-default-role": "user",
+        "x-hasura-user-id": {
+            "path": "$.sub"
+        }
+    }
+}

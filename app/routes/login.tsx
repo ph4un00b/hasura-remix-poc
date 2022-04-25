@@ -26,13 +26,15 @@ export const action: ActionFunction = async ({ request }) => {
   const expiresIn = 60 * 60 * 24 * 5 * 1000;
   try {
     const token = await admin.auth().verifyIdToken(idToken);
-
+    console.log('token', token)
+    console.log('roken__result', new Date().getTime() / 1000 - token.auth_time)
+    
     if (new Date().getTime() / 1000 - token.auth_time < 5 * 60) {
       // Create session cookie and set it.
-      const cookie = await admin
-        .auth()
-        .createSessionCookie(idToken, { expiresIn });
+      const cookie = await admin.auth().createSessionCookie(idToken, { expiresIn });
+      console.log("_____________jamon!")
       console.log(cookie);
+
       session.set("idToken", cookie);
       // Create a new CSRF token to avoid session fixation attacks
       // https://owasp.org/www-community/attacks/Session_fixation
