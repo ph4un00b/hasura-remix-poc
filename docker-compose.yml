@@ -8,12 +8,16 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
-    image: hasura/graphql-engine:v2.5.1
+    build:
+      context: ./hasura
+      dockerfile: ./Dockerfile
     ports:
-    - "8080:8080"
+      - "8080:8080"
     depends_on:
-    - "postgres"
+      - "postgres"
     restart: always
+    env_file:
+      - ./hasura/.env
     environment:
       ## postgres database to store Hasura metadata
       HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
