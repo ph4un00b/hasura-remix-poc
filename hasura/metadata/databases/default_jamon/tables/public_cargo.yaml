@@ -6,3 +6,25 @@ configuration:
   custom_column_names:
     launch_id: launchId
     user_id: userId
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - launch_id
+        - name
+        - user_id
+        - weight
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - name
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
